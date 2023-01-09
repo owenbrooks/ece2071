@@ -1,6 +1,6 @@
 #pragma once
 #include <tomcrypt.h>
-#include "Image.h"
+#include "image.h"
 
 // Example usage:
     // unsigned long inputSize = 5;

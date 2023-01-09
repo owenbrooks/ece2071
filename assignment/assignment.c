@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "Image.h"
+#include "image.h"
 #include "hash.h"
 #include "stats.h"
 
