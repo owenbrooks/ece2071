@@ -24,3 +24,7 @@ const int ANDROID8_0_0 = 24;  // Android 8.0.0
 ## Comment Style
 Use `//` for comments.
 
+## Indentation
+4 spaces should be used for indentation. 
+In VSCode: CMD-Shift-P (or Ctrl-Shift-P), Indent Using Spaces, 4
+
