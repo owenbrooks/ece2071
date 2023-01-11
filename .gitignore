@@ -2,5 +2,5 @@
 .DS_Store
 output/
 *.png
-image_dataset
+assignment/scans
 libtomcrypt

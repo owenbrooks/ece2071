@@ -1,6 +1,10 @@
 
 BUILDDIR=output
+CFLAGS=-Iinclude -ltomcrypt -L /opt/homebrew/lib -I /opt/homebrew/include
 
 assignment:
 	mkdir -p $(BUILDDIR)
-	gcc assignment.c -Iinclude -o $(BUILDDIR)/assignment `pkg-config --cflags --libs MagickWand` -ltomcrypt -L /opt/homebrew/lib -I /opt/homebrew/include
+	gcc assignment.c -g -o $(BUILDDIR)/assignment $(CFLAGS)
+stbi:
+	mkdir -p $(BUILDDIR)
+	gcc stb_image_example.c -o $(BUILDDIR)/stbi_image_example $(CFLAGS)
