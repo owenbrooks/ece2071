@@ -21,7 +21,7 @@ double compute_variance(int *data, int data_length)
     double sum_squared_dist = 0;
     for (int i = 0; i < data_length; i++)
     {
-        double distance = data[i]-mean;
+        double distance = data[i] - mean;
         sum_squared_dist += distance * distance;
     }
     double variance = sum_squared_dist / data_length;
@@ -33,7 +33,8 @@ int compute_min(int *data, int data_length)
     int current_min = data[0];
     for (int i = 0; i < data_length; i++)
     {
-        if (data[i] < current_min) {
+        if (data[i] < current_min)
+        {
             current_min = data[i];
         }
     }
@@ -45,11 +46,10 @@ int compute_max(int *data, int data_length)
     int current_max = data[0];
     for (int i = 0; i < data_length; i++)
     {
-        if (data[i] < current_max) {
+        if (data[i] < current_max)
+        {
             current_max = data[i];
         }
     }
     return current_max;
 }
-
-int compute_mode(int *data, int data_length);

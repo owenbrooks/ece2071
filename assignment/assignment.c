@@ -35,13 +35,20 @@ int main(void)
         //     }
         //     printf("\n");
         // }
-        double mean = compute_mean(known_image.data, known_image.width*known_image.height);
-        double variance = compute_variance(known_image.data, known_image.width*known_image.height);
-        printf("mean: %f, var: %f\n", mean, variance);
+        double mean = compute_mean(known_image.data, known_image.width * known_image.height);
+        double variance = compute_variance(known_image.data, known_image.width * known_image.height);
 
-        write_image_to_file("hello.png", &known_image);
+        known_image_hashes[known_index] = hashSHA256Image(&known_image);
 
-        // known_image_hashes[known_index] = hashSHA256Image(&known_image);
+        // Print the hash
+        printf("hash: ");
+        for (int x = 0; x < sha256_desc.hashsize; x++)
+        {
+            printf("%02x", known_image_hashes[known_index][x]);
+        }
+        // Print the stats
+        printf(", mean: %f, var: %f", mean, variance);
+        printf("\n");
     }
 
     // printf("Beginning Stage 2: Search...\n");
