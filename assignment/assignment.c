@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include "image.h"
-#include "hash.h"
-#include "stats.h"
-#include "files.h"
+#include "2071_image.h"
+#include "2071_hash.h"
+#include "2071_stats.h"
+#include "2071_files.h"
 
 int find_match(unsigned char *mystery_hash, unsigned char **known_hashes, int known_hashes_length)
 {

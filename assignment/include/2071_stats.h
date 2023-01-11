@@ -1,3 +1,4 @@
+// Functions for computing statistics on arrays of data
 #pragma once
 
 // int test_set[] = {21, 38, 12, 41};

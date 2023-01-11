@@ -1,4 +1,5 @@
-
+// Functions for listing all files in a directory
+#pragma once
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +16,7 @@ int store_filenames(const char *directory, char ***filenames)
     {
         while ((dir = readdir(d)) != NULL)
         {
-            if (dir->d_type == DT_REG)
+            if (dir->d_type == DT_REG) // ignores folders
             {
                 file_count++;
             }

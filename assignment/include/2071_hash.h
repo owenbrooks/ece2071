@@ -1,6 +1,7 @@
+// Functions for calculating hashes
 #pragma once
 #include <tomcrypt.h>
-#include "image.h"
+#include "2071_image.h"
 
 // Example usage:
 // unsigned long inputSize = 5;

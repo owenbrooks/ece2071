@@ -1,3 +1,4 @@
+// Functions for reading and writing images
 #pragma once
 #define STBI_ONLY_PNG // disables other image formats
 #define STB_IMAGE_IMPLEMENTATION
