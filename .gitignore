@@ -4,3 +4,7 @@ output/
 *.png
 assignment/scans
 libtomcrypt
+dataset*
+venv
+*.jpg
+*.pyc
