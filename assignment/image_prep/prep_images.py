@@ -5,9 +5,6 @@
 # - Resize to desired size (224x224)
 # - Apply random transformation
 # - Save with unique ID
-# - Randomly choose X to be unknown set
-# - (Optionally) Randomly apply transformations to these
-# - Save these
 
 from PIL import Image, ImageOps
 import random
