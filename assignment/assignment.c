@@ -6,13 +6,13 @@
 
 int find_match(unsigned char *mystery_hash, unsigned char **known_hashes, int known_hashes_length)
 {
-    return 0; // TODO: implement
+    return -1; // TODO: implement
 }
 
 int main(void)
 {
     char **known_image_names; // pointer to an array of filenames
-    int file_count = store_filenames("scans/png_images", &known_image_names);
+    int file_count = store_filenames("dataset_a/known", &known_image_names);
 
     const char *mystery_image_names[] = {"unknown1.png", "unknown2.png", "unknown3.png"};
     int known_images_length = 100;
@@ -48,24 +48,25 @@ int main(void)
         }
         // Print the stats
         printf(", mean: %f, var: %f", mean, variance);
+        printf(", width: %d, height: %d", known_image.width, known_image.height);
         printf("\n");
     }
 
-    // printf("Beginning Stage 2: Search...\n");
+    printf("Beginning Stage 2: Search...\n");
 
     // Compute hashes of all mystery images, and find the hash matches for the known images
-    // for (int mystery_index = 0; mystery_index < mystery_images_length; mystery_index++)
-    // {
-    //     const char *mystery_image_filename = known_image_names[mystery_index];
-    //     Image mystery_image = read_image_from_file(mystery_image_filename);
+    for (int mystery_index = 0; mystery_index < mystery_images_length; mystery_index++)
+    {
+        const char *mystery_image_filename = known_image_names[mystery_index];
+        Image mystery_image = read_image_from_file(mystery_image_filename);
 
-    //     unsigned char *mystery_hash = hashSHA256Image(&mystery_image);
+        unsigned char *mystery_hash = hashSHA256Image(&mystery_image);
 
-    //     // Find and report match
-    //     int match_index = find_match(mystery_hash, known_image_hashes, known_images_length);
-    //     if (match_index != -1)
-    //     {
-    //         printf("Found match! Image %s matches patient ID %s.\n", mystery_image_names[mystery_index], known_image_names[match_index]);
-    //     }
-    // }
+        // Find and report match
+        int match_index = find_match(mystery_hash, known_image_hashes, known_images_length);
+        if (match_index != -1)
+        {
+            printf("Found match! Image %s matches patient ID %s.\n", mystery_image_names[mystery_index], known_image_names[match_index]);
+        }
+    }
 }

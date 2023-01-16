@@ -65,6 +65,8 @@ def mirror(image):
     # Mirrors image left to right
     return ImageOps.mirror(image)
 
+# Shift / rot
+
 
 def crop_to_square(image):
     new_height = min(image.height, image.width)

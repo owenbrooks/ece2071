@@ -8,3 +8,6 @@ assignment:
 stbi:
 	mkdir -p $(BUILDDIR)
 	gcc stb_image_example.c -o $(BUILDDIR)/stbi_image_example $(CFLAGS)
+tf:
+	mkdir -p $(BUILDDIR)
+	gcc test_transforms.c -g -o $(BUILDDIR)/test_transforms $(CFLAGS)
