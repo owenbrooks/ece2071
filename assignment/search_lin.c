@@ -57,6 +57,7 @@ int main(int argc, char *argv[])
         hash_string_to_array(&known_image_hashes[hash_index], raw_hash_string); // TODO: remove the need for this
         // printf("%s\n", raw_hash_string);
         // print_hash(known_image_hashes[hash_index]);
+        // printf("\n");
         hash_index++;
     }
 

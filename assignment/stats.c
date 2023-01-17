@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 
         known_image_hashes[known_index] = hashSHA256Image(&known_image);
 
+        printf("%s ", known_image_filename);
         // Print the hash
         print_hash(known_image_hashes[known_index]);
 

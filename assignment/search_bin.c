@@ -29,7 +29,6 @@ int find_match(uint8_t *unknown_hash, uint8_t **known_hashes, int known_hashes_l
             matching_index = hash_index;
             break;
         }
-
     }
     return matching_index;
 }
@@ -37,22 +36,31 @@ int find_match(uint8_t *unknown_hash, uint8_t **known_hashes, int known_hashes_l
 // Usage: search dataset_a/known dataset_a/unknown_no_transform hashes.txt
 int main(int argc, char *argv[])
 {
-    char **known_image_names; // pointer to an array of filenames
-    char **unknown_image_names;
-    char *known_image_dir = argv[1];
-    char *unknown_image_dir = argv[2];
-    int known_images_length = store_filenames(known_image_dir, &known_image_names);
-    int unknown_images_length = store_filenames(unknown_image_dir, &unknown_image_names);
+    int max_file_count = 1000;
+    int max_filename_length = 100; // characters
 
+    char **known_image_names = malloc(max_file_count * sizeof(char *)); // pointer to an array of filenames
+                                                                        // Allocate space for filenames
+
+    for (int hash_index = 0; hash_index < max_file_count; hash_index++)
+    {
+        known_image_names[hash_index] = malloc(max_filename_length + 1);
+    }
+    char **unknown_image_names;
+    char *unknown_image_dir = argv[1];
+    int known_images_length = max_file_count;
+    int unknown_images_length = store_filenames(unknown_image_dir, &unknown_image_names);
     uint8_t *known_image_hashes[known_images_length];
 
     // Read in hashes of all known images
-    char *hashes_filename = argv[3];
-    FILE *hash_file = fopen (hashes_filename, "r");
+    char *hashes_filename = argv[2];
+    FILE *hash_file = fopen(hashes_filename, "r");
     char raw_hash_string[100];
+    char raw_file_string[max_filename_length];
     float mean_value;
     int hash_index = 0;
-    while (fscanf(hash_file, "%s %f", raw_hash_string, &mean_value) == 2)
+
+    while (fscanf(hash_file, "%s %s %f", known_image_names[hash_index], raw_hash_string, &mean_value) == 3)
     {
         hash_string_to_array(&known_image_hashes[hash_index], raw_hash_string); // TODO: remove the need for this
         // printf("%s\n", raw_hash_string);
