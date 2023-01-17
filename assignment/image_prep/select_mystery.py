@@ -12,7 +12,7 @@ import csv
 def main():
     random.seed(2071)
 
-    dataset_dir = "../dataset_b"
+    dataset_dir = "../dataset_a"
     mystery_set_size = 10
 
     known_dir = os.path.join(dataset_dir, 'known')
@@ -50,7 +50,7 @@ def main():
             answer_writer.writeheader()
 
             for (file_index, known_path) in enumerate(mystery_files):
-                mystery_filename = f"unknown-{file_index:03}.png"
+                mystery_filename = f"unknown-{variant}-{file_index:03}.png"
                 known_filename = os.path.split(known_path)[-1]
                 row = {"unknown": mystery_filename, "known": known_filename}
                 answer_writer.writerow(row)
