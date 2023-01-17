@@ -4,7 +4,9 @@ CFLAGS=-Iinclude -lm -ltomcrypt -L /opt/homebrew/lib -I /opt/homebrew/include -l
 # -ltomcrypt provides hashing functions
 # -lm is math, needed for tomcrypt
 # -ltcmalloc for gperftools
-.PHONY: stats search
+.PHONY: stats search all
+
+all: stats search tf
 
 stats:
 	mkdir -p $(BUILDDIR)
@@ -12,9 +14,6 @@ stats:
 search:
 	mkdir -p $(BUILDDIR)
 	gcc search.c -o $(BUILDDIR)/search $(CFLAGS)
-stbi:
-	mkdir -p $(BUILDDIR)
-	gcc stb_image_example.c -o $(BUILDDIR)/stbi_image_example $(CFLAGS)
 tf:
 	mkdir -p $(BUILDDIR)
 	gcc test_transforms.c -g -o $(BUILDDIR)/test_transforms $(CFLAGS)

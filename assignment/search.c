@@ -47,7 +47,8 @@ int main(int argc, char *argv[])
     uint8_t *known_image_hashes[known_images_length];
 
     // Read in hashes of all known images
-    FILE *hash_file = fopen ("hashes.txt", "r");
+    char *hashes_filename = argv[3];
+    FILE *hash_file = fopen (hashes_filename, "r");
     char raw_hash_string[100];
 
     int hash_index = 0;
@@ -67,7 +68,6 @@ int main(int argc, char *argv[])
         Image unknown_image = read_image_from_file(unknown_image_filename);
 
         unsigned char *unknown_hash = hashSHA256Image(&unknown_image);
-
 
         // Find and report match
         int match_index = find_match(unknown_hash, known_image_hashes, known_images_length);
