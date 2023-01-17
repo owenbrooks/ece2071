@@ -65,7 +65,6 @@ void print_hash(uint8_t *hash)
     {
         printf("%02x", hash[x]);
     }
-    printf("\n");
 }
 
 // Takes a string containing hex numbers and converts this to an array of uint8_t

@@ -35,9 +35,10 @@ int main(int argc, char *argv[])
         print_hash(known_image_hashes[known_index]);
 
         // // Print the stats
-        // printf(", mean: %f, var: %f", mean, variance);
-        // printf(", width: %d, height: %d", known_image.width, known_image.height);
-        // printf("\n");
+        printf(" %f", mean);
+        // printf("mean: %f, var: %f", mean, variance);
+        // printf("width: %d, height: %d", known_image.width, known_image.height);
+        printf("\n");
 
         free(known_image.data);
     }
