@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 int store_filenames(const char *directory, char ***filenames)
 {
@@ -16,7 +17,9 @@ int store_filenames(const char *directory, char ***filenames)
     {
         while ((dir = readdir(d)) != NULL)
         {
-            if (dir->d_type == DT_REG) // ignores folders
+            // ignores folders and files beginning with "."
+            bool should_ignore = dir->d_type != DT_REG || dir->d_name[0] == '.';
+            if (!should_ignore)
             {
                 file_count++;
             }
@@ -34,12 +37,13 @@ int store_filenames(const char *directory, char ***filenames)
     {
         while ((dir = readdir(d)) != NULL)
         {
-            if (dir->d_type == DT_REG)
+            bool should_ignore = dir->d_type != DT_REG || dir->d_name[0] == '.';
+            if (!should_ignore)
             {
                 // printf("%s\n", dir->d_name);
                 // Allocate memory for each string and copy it over
                 int path_length = strlen(directory) + strlen(dir->d_name);
-                (*filenames)[file_index] = (char *)malloc(path_length + 1);                           // TODO: double check +1
+                (*filenames)[file_index] = (char *)malloc(path_length + 2);                           // TODO: double check +1
                 snprintf((*filenames)[file_index], path_length + 2, "%s/%s", directory, dir->d_name); // TODO: confirm +2
                 file_index++;
             }

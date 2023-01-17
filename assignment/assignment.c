@@ -3,20 +3,47 @@
 #include "2071_hash.h"
 #include "2071_stats.h"
 #include "2071_files.h"
+#include <stdbool.h>
 
-int find_match(unsigned char *mystery_hash, unsigned char **known_hashes, int known_hashes_length)
+int find_match(unsigned char *unknown_hash, unsigned char **known_hashes, int known_hashes_length)
 {
-    return -1; // TODO: implement
+    int hashsize = sha256_desc.hashsize;
+
+    // Loop through all known hashes
+    int matching_index = -1;
+    for (int hash_index = 0; hash_index < known_hashes_length; hash_index++)
+    {
+        // Compare to the unknown hash, stop looping if equal
+        unsigned char *known_hash = known_hashes[hash_index];
+        // print_hash(known_hash);
+        // print_hash(unknown_hash);
+        bool found_match = true;
+        for (int byte_index = 0; byte_index < hashsize; byte_index++)
+        {
+            if (unknown_hash[byte_index] != known_hash[byte_index])
+            {
+                found_match = false;
+                break;
+            }
+        }
+        if (found_match)
+        {
+            matching_index = hash_index;
+            break;
+        }
+
+    }
+    return matching_index;
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
     char **known_image_names; // pointer to an array of filenames
-    int file_count = store_filenames("dataset_a/known", &known_image_names);
-
-    const char *mystery_image_names[] = {"unknown1.png", "unknown2.png", "unknown3.png"};
-    int known_images_length = 100;
-    int mystery_images_length = 10;
+    char **unknown_image_names;
+    char *known_image_dir = argv[0];
+    char *unknown_image_dir = argv[1];
+    int known_images_length = store_filenames(known_image_dir, &known_image_names);
+    int unknown_images_length = store_filenames(unknown_image_dir, &unknown_image_names);
 
     double known_image_means_red[known_images_length];
     unsigned char *known_image_hashes[known_images_length];
@@ -29,48 +56,42 @@ int main(void)
         const char *known_image_filename = known_image_names[known_index];
         Image known_image = read_image_from_file(known_image_filename);
 
-        // for (int i = 0; i < known_image.width; i++) {
-        //     for (int j = 0; j < known_image.height; j++) {
-        //         printf("%d ", known_image.data[j*known_image.width + i]);
-        //     }
-        //     printf("\n");
-        // }
         double mean = compute_mean(known_image.data, known_image.width * known_image.height);
         double variance = compute_variance(known_image.data, known_image.width * known_image.height);
 
         known_image_hashes[known_index] = hashSHA256Image(&known_image);
 
         // Print the hash
-        printf("hash: ");
-        for (int x = 0; x < sha256_desc.hashsize; x++)
-        {
-            printf("%02x", known_image_hashes[known_index][x]);
-        }
-        // Print the stats
-        printf(", mean: %f, var: %f", mean, variance);
-        printf(", width: %d, height: %d", known_image.width, known_image.height);
-        printf("\n");
+        // print_hash(known_image_hashes[known_index]);
+        // // Print the stats
+        // printf(", mean: %f, var: %f", mean, variance);
+        // printf(", width: %d, height: %d", known_image.width, known_image.height);
+        // printf("\n");
 
         free(known_image.data);
     }
 
     printf("Beginning Stage 2: Search...\n");
 
-    // Compute hashes of all mystery images, and find the hash matches for the known images
-    for (int mystery_index = 0; mystery_index < mystery_images_length; mystery_index++)
+    // Compute hashes of all unknown images, and find the hash matches for the known images
+    for (int unknown_index = 0; unknown_index < unknown_images_length; unknown_index++)
     {
-        const char *mystery_image_filename = known_image_names[mystery_index];
-        Image mystery_image = read_image_from_file(mystery_image_filename);
+        const char *unknown_image_filename = unknown_image_names[unknown_index];
+        Image unknown_image = read_image_from_file(unknown_image_filename);
 
-        unsigned char *mystery_hash = hashSHA256Image(&mystery_image);
+        unsigned char *unknown_hash = hashSHA256Image(&unknown_image);
 
         // Find and report match
-        int match_index = find_match(mystery_hash, known_image_hashes, known_images_length);
+        int match_index = find_match(unknown_hash, known_image_hashes, known_images_length);
         if (match_index != -1)
         {
-            printf("Found match! Image %s matches patient ID %s.\n", mystery_image_names[mystery_index], known_image_names[match_index]);
+            printf("Found match! Image %s matches patient ID %s.\n", unknown_image_names[unknown_index], known_image_names[match_index]);
+        }
+        else
+        {
+            printf("No match found for image %s.\n", unknown_image_names[unknown_index]);
         }
 
-        free(mystery_image.data);
+        free(unknown_image.data);
     }
 }

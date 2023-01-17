@@ -58,3 +58,12 @@ unsigned char *hashSHA256Image(Image *image)
     // Return the result
     return hashResult;
 }
+
+void print_hash(unsigned char *hash)
+{
+    for (int x = 0; x < sha256_desc.hashsize; x++)
+    {
+        printf("%02x", hash[x]);
+    }
+    printf("\n");
+}

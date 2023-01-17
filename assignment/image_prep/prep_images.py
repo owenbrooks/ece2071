@@ -26,7 +26,7 @@ def main():
         im_prepared = prepare_image(im_orig)
         im_final = transform_image(im_prepared)
 
-        output_name = f"known-{file_index:03}.jpg"
+        output_name = f"known-{file_index:03}.png"
         output_path = os.path.join(output_dir, output_name)
         im_final.save(output_path)
 

@@ -37,7 +37,7 @@ def main():
             else:
                 im_final = im_orig
 
-            output_name = f"unknown-{variant}-{file_index:03}.jpg"
+            output_name = f"unknown-{variant}-{file_index:03}.png"
             output_path = os.path.join(output_dir, output_name)
             im_final.save(output_path)
 
@@ -50,7 +50,7 @@ def main():
             answer_writer.writeheader()
 
             for (file_index, known_path) in enumerate(mystery_files):
-                mystery_filename = f"unknown-{file_index:03}.jpg"
+                mystery_filename = f"unknown-{file_index:03}.png"
                 known_filename = os.path.split(known_path)[-1]
                 row = {"unknown": mystery_filename, "known": known_filename}
                 answer_writer.writerow(row)
