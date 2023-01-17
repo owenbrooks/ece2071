@@ -52,6 +52,9 @@ unsigned char *hashSHA256Image(Image *image)
     sha256_process(&md, (const unsigned char *)input_data, image_data_length); // TODO: fix calculation
     // Finish the hash calculation
     sha256_done(&md, hashResult);
+
+    free(input_data);
+
     // Return the result
     return hashResult;
 }

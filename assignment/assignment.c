@@ -50,6 +50,8 @@ int main(void)
         printf(", mean: %f, var: %f", mean, variance);
         printf(", width: %d, height: %d", known_image.width, known_image.height);
         printf("\n");
+
+        free(known_image.data);
     }
 
     printf("Beginning Stage 2: Search...\n");
@@ -68,5 +70,7 @@ int main(void)
         {
             printf("Found match! Image %s matches patient ID %s.\n", mystery_image_names[mystery_index], known_image_names[match_index]);
         }
+
+        free(mystery_image.data);
     }
 }
