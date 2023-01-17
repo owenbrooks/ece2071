@@ -80,7 +80,7 @@ void hash_string_to_array(uint8_t **dest, char *source)
         char hex_couplet[3];
         char *endptr = malloc(256);
         snprintf(hex_couplet, 3, "%c%c", source[2*x], source[2*x+1]);
-        uint8_t extracted = strtol(hex_couplet, endptr, 16);
+        uint8_t extracted = strtol(hex_couplet, &endptr, 16);
         hash[x] = extracted; 
     }
     *dest = hash;
