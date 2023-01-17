@@ -1,10 +1,17 @@
 
 BUILDDIR=output
-CFLAGS=-Iinclude -ltomcrypt -L /opt/homebrew/lib -I /opt/homebrew/include
+CFLAGS=-Iinclude -lm -ltomcrypt -L /opt/homebrew/lib -I /opt/homebrew/include -ltcmalloc
+# -ltomcrypt provides hashing functions
+# -lm is math, needed for tomcrypt
+# -ltcmalloc for gperftools
+.PHONY: stats search
 
-assignment:
+stats:
 	mkdir -p $(BUILDDIR)
-	gcc assignment.c -g -o $(BUILDDIR)/assignment $(CFLAGS)
+	gcc stats.c -o $(BUILDDIR)/stats $(CFLAGS)
+search:
+	mkdir -p $(BUILDDIR)
+	gcc search.c -o $(BUILDDIR)/search $(CFLAGS)
 stbi:
 	mkdir -p $(BUILDDIR)
 	gcc stb_image_example.c -o $(BUILDDIR)/stbi_image_example $(CFLAGS)

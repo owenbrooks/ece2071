@@ -5,7 +5,7 @@
 #include "2071_files.h"
 #include <stdbool.h>
 
-int find_match(unsigned char *unknown_hash, unsigned char **known_hashes, int known_hashes_length)
+int find_match(uint8_t *unknown_hash, uint8_t **known_hashes, int known_hashes_length)
 {
     int hashsize = sha256_desc.hashsize;
 
@@ -14,9 +14,7 @@ int find_match(unsigned char *unknown_hash, unsigned char **known_hashes, int kn
     for (int hash_index = 0; hash_index < known_hashes_length; hash_index++)
     {
         // Compare to the unknown hash, stop looping if equal
-        unsigned char *known_hash = known_hashes[hash_index];
-        // print_hash(known_hash);
-        // print_hash(unknown_hash);
+        uint8_t *known_hash = known_hashes[hash_index];
         bool found_match = true;
         for (int byte_index = 0; byte_index < hashsize; byte_index++)
         {
@@ -36,44 +34,33 @@ int find_match(unsigned char *unknown_hash, unsigned char **known_hashes, int kn
     return matching_index;
 }
 
+// Usage: search dataset_a/known dataset_a/unknown_no_transform hashes.txt
 int main(int argc, char *argv[])
 {
     char **known_image_names; // pointer to an array of filenames
     char **unknown_image_names;
-    char *known_image_dir = argv[0];
-    char *unknown_image_dir = argv[1];
+    char *known_image_dir = argv[1];
+    char *unknown_image_dir = argv[2];
     int known_images_length = store_filenames(known_image_dir, &known_image_names);
     int unknown_images_length = store_filenames(unknown_image_dir, &unknown_image_names);
 
-    double known_image_means_red[known_images_length];
-    unsigned char *known_image_hashes[known_images_length];
+    uint8_t *known_image_hashes[known_images_length];
 
-    printf("Beginning Stage 1: Image Statistics and Hashing...\n");
+    // Read in hashes of all known images
+    FILE *hash_file = fopen ("hashes.txt", "r");
+    char raw_hash_string[100];
 
-    // Compute hashes of all known images
-    for (int known_index = 0; known_index < known_images_length; known_index++)
+    int hash_index = 0;
+    while (fscanf(hash_file, "%s", raw_hash_string) == 1)
     {
-        const char *known_image_filename = known_image_names[known_index];
-        Image known_image = read_image_from_file(known_image_filename);
-
-        double mean = compute_mean(known_image.data, known_image.width * known_image.height);
-        double variance = compute_variance(known_image.data, known_image.width * known_image.height);
-
-        known_image_hashes[known_index] = hashSHA256Image(&known_image);
-
-        // Print the hash
-        // print_hash(known_image_hashes[known_index]);
-        // // Print the stats
-        // printf(", mean: %f, var: %f", mean, variance);
-        // printf(", width: %d, height: %d", known_image.width, known_image.height);
-        // printf("\n");
-
-        free(known_image.data);
+        hash_string_to_array(&known_image_hashes[hash_index], raw_hash_string); // TODO: remove the need for this
+        // printf("%s\n", raw_hash_string);
+        // print_hash(known_image_hashes[hash_index]);
+        hash_index++;
     }
 
-    printf("Beginning Stage 2: Search...\n");
-
     // Compute hashes of all unknown images, and find the hash matches for the known images
+    printf("unknown known\n");
     for (int unknown_index = 0; unknown_index < unknown_images_length; unknown_index++)
     {
         const char *unknown_image_filename = unknown_image_names[unknown_index];
@@ -81,11 +68,14 @@ int main(int argc, char *argv[])
 
         unsigned char *unknown_hash = hashSHA256Image(&unknown_image);
 
+
         // Find and report match
         int match_index = find_match(unknown_hash, known_image_hashes, known_images_length);
+
         if (match_index != -1)
         {
-            printf("Found match! Image %s matches patient ID %s.\n", unknown_image_names[unknown_index], known_image_names[match_index]);
+            // printf("Found match! Image %s matches patient ID %s.\n", unknown_image_names[unknown_index], known_image_names[match_index]);
+            printf("%s %s\n", unknown_image_names[unknown_index], known_image_names[match_index]);
         }
         else
         {
